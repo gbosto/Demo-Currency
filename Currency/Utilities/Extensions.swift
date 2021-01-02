@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 extension UIView {
     func anchor(top: NSLayoutYAxisAnchor? = nil,
@@ -46,52 +47,26 @@ extension UIView {
         }
     }
     
-    func center(inView view: UIView, yConstant: CGFloat? = 0) {
-        translatesAutoresizingMaskIntoConstraints = false
-        centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: yConstant!).isActive = true
-    }
-    
-    func centerX(inView view: UIView, topAnchor: NSLayoutYAxisAnchor? = nil, paddingTop: CGFloat? = 0) {
-        translatesAutoresizingMaskIntoConstraints = false
-        centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
-        if let topAnchor = topAnchor {
-            self.topAnchor.constraint(equalTo: topAnchor, constant: paddingTop!).isActive = true
-        }
-    }
-    
-    func centerY(inView view: UIView, leftAnchor: NSLayoutXAxisAnchor? = nil,
-                 paddingLeft: CGFloat = 0, constant: CGFloat = 0) {
-        
-        translatesAutoresizingMaskIntoConstraints = false
-        centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: constant).isActive = true
-        
-        if let left = leftAnchor {
-            anchor(left: left, paddingLeft: paddingLeft)
-        }
-    }
-    
     func setDimensions(height: CGFloat, width: CGFloat) {
         translatesAutoresizingMaskIntoConstraints = false
         heightAnchor.constraint(equalToConstant: height).isActive = true
         widthAnchor.constraint(equalToConstant: width).isActive = true
     }
+}
+
+extension UIViewController {
     
-    func setHeight(_ height: CGFloat) {
-        translatesAutoresizingMaskIntoConstraints = false
-        heightAnchor.constraint(equalToConstant: height).isActive = true
-    }
-    
-    func setWidth(_ width: CGFloat) {
-        translatesAutoresizingMaskIntoConstraints = false
-        widthAnchor.constraint(equalToConstant: width).isActive = true
-    }
-    
-    func fillSuperview() {
-        translatesAutoresizingMaskIntoConstraints = false
-        guard let view = superview else { return }
-        anchor(top: view.topAnchor, left: view.leftAnchor,
-               bottom: view.bottomAnchor, right: view.rightAnchor)
+    static let hud = JGProgressHUD(style: .dark)
+
+    func showLoader(_ show: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {return}
+            self.view.endEditing(true)
+        }
+        if show {
+            UIViewController.hud.show(in: view)
+        } else {
+            UIViewController.hud.dismiss()
+        }
     }
 }

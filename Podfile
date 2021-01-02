@@ -7,4 +7,6 @@ target 'Currency' do
 
   # Pods for Currency
 
+	pod 'SDWebImage', '~> 5.0'
+	pod 'JGProgressHUD'
 end

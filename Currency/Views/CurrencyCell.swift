@@ -6,8 +6,11 @@
 //
 
 import UIKit
+import SDWebImage
 
 class CurrencyCell: UITableViewCell {
+    
+    //MARK: - Properties
     
     var currency: Currency? {
         didSet {
@@ -18,7 +21,6 @@ class CurrencyCell: UITableViewCell {
     private let acronymLabel: UILabel =  {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
-        label.text = "acr"
         
         return label
     }()
@@ -26,7 +28,6 @@ class CurrencyCell: UITableViewCell {
     private let namelabel: UILabel =  {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
-        label.text = "name"
         
         return label
     }()
@@ -34,7 +35,6 @@ class CurrencyCell: UITableViewCell {
     private let ratelabel: UILabel =  {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
-        label.text = "7.123"
         
         return label
     }()
@@ -42,25 +42,27 @@ class CurrencyCell: UITableViewCell {
     private let changelabel: UILabel =  {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
-        label.text = "0.0012"
         
         return label
     }()
     
     private let changeImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "gear")
         imageView.setDimensions(height: 10, width: 10)
         
         return imageView
     }()
     
+    //MARK: - Lifecycle
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        isUserInteractionEnabled = false
+        
         let nameStack = UIStackView(arrangedSubviews: [acronymLabel, namelabel])
         nameStack.axis = .horizontal
-        nameStack.spacing = 12
+        nameStack.spacing = 4
         
         addSubview(nameStack)
         nameStack.anchor(top: topAnchor, left: leftAnchor, paddingTop: 12, paddingLeft: 12)
@@ -80,13 +82,17 @@ class CurrencyCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Helpers
  
     func configure() {
         guard let currency = self.currency else {return}
-//        acronymLabel.text = currency.acronym
-//        namelabel.text = currency.name
-//        ratelabel.text = currency.rate
-//        changelabel.text = currency.currencyChanged
+        acronymLabel.text = currency.acronym
+        namelabel.text = "- \(currency.name)"
+        ratelabel.text = "\(currency.rate) Gel"
+        changelabel.text = currency.currencyChanged
+        let imageurl = URL(string: currency.imageUrl)
+        changeImageView.sd_setImage(with: imageurl)
+        
     }
     
 }

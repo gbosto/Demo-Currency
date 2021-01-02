@@ -7,4 +7,10 @@
 
 import Foundation
 
-
+struct Currency {
+    var acronym: String
+    var name: String
+    var rate: String
+    var imageUrl: String
+    var currencyChanged: String
+}
